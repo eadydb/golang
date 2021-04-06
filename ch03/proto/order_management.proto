@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+// protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative order_management.proto
+
+import "google/protobuf/wrappers.proto";
+
+package ecommerce;
+
+service OrderManagement {
+  rpc getOrder(google.protobuf.StringValue) returns (Order);
+  rpc searchOrders(google.protobuf.StringValue) returns (stream Order); // Server-side Streaming RPC
+  rpc updateOrders(stream Order) returns (google.protobuf.StringValue); // Client-side Streaming RPC
+  rpc processOrders(stream google.protobuf.StringValue) returns (stream CombinedShipment); // Bi-Directional Streaming RPC
+}
+
+message Order {
+  string id = 1;
+  repeated string items = 2; // repeated is used to represent the fields that can be repeated any number of times including zero in a
+  // message.
+  string description = 3;
+  float price = 4;
+  string destination = 5;
+}
+
+message CombinedShipment {
+  string id = 1;
+  string status = 2;
+  repeated Order orderList = 3;
+}

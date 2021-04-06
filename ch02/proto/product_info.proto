@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+//  protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative product_info.proto
+package ecommerce;
+
+
+service ProductInfo {
+  rpc addProduct(Product) returns (ProductID);
+  rpc getProduct(ProductID) returns (Product);
+}
+
+
+
+message ProductID{
+  string value = 1;
+}
+
+message Product{
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  float price = 4;
+}
